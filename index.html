@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Q-Eco AI — Carbon-Aware Global Scheduler</title>
+    <meta name="description" content="Futuristic carbon-aware Kubernetes scheduling dashboard with real-time telemetry, FinOps tracking, and global workload migration.">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Space+Grotesk:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <!-- CRT Scanline overlay -->
+    <div class="scanlines"></div>
+
+    <div class="app-container">
+
+        <!-- ─── SIDEBAR ─── -->
+        <aside class="sidebar cyber-panel">
+            <div class="brand">
+                <div class="brand-hexagon">
+                    <i class="fa-solid fa-earth-americas"></i>
+                </div>
+                <h2>Q-Eco <span>OS</span></h2>
+            </div>
+
+            <nav>
+                <ul>
+                    <li class="active"><a href="#mesh"><i class="fa-solid fa-network-wired"></i> Global Mesh</a></li>
+                    <li><a href="#control"><i class="fa-solid fa-sliders"></i> Control Deck</a></li>
+                    <li><a href="#telemetry"><i class="fa-solid fa-chart-area"></i> Telemetry</a></li>
+                    <li><a href="#finops"><i class="fa-solid fa-coins"></i> FinOps</a></li>
+                </ul>
+            </nav>
+
+            <div class="sidebar-meta">
+                <div class="meta-row"><span>Scheduler Version</span><span class="text-neon-blue">v3.7.2</span></div>
+                <div class="meta-row"><span>Active Nodes</span><span class="text-neon-green">4 / 4</span></div>
+                <div class="meta-row"><span>Total Pods</span><span class="text-neon-green" id="total-pods">1200</span></div>
+            </div>
+
+            <div class="system-status glowing-text text-neon-green">
+                <div class="status-indicator"></div>
+                SYSTEM ONLINE
+            </div>
+        </aside>
+
+        <!-- ─── MAIN ─── -->
+        <main class="main-content" id="dashboard">
+
+            <!-- Top Bar -->
+            <header class="topbar">
+                <div class="header-titles">
+                    <h1>Global Workload Orchestration</h1>
+                    <p class="subtitle cyber-text">Live multi-region carbon-aware scheduling &amp; FinOps telemetry</p>
+                </div>
+                <div class="global-kpi cyber-panel flex-row">
+                    <div class="kpi-info">
+                        <span class="kpi-label">Cumulative Carbon Saved</span>
+                        <span class="kpi-value text-neon-green" id="kpi-carbon-reduction">-- %</span>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Grid -->
+            <div class="dashboard-grid" id="mesh">
+
+                <!-- MAP -->
+                <section class="panel double-span cyber-panel map-section" id="global-map">
+                    <div class="panel-header glowing-border-bottom">
+                        <h3><i class="fa-solid fa-globe"></i> Global Topology &amp; Migration Routes</h3>
+                        <span class="badge live-badge">LIVE UPLINK</span>
+                    </div>
+                    <div class="map-container" id="map-container">
+                        <div class="radar-sweep"></div>
+                        <div class="map-grid-overlay"></div>
+                        <canvas id="flowCanvas"></canvas>
+                    </div>
+                </section>
+
+                <!-- CONTROL DECK -->
+                <section class="panel cyber-panel control-room" id="control">
+                    <div class="panel-header glowing-border-bottom">
+                        <h3><i class="fa-solid fa-microchip"></i> Scheduler Controls</h3>
+                    </div>
+
+                    <div class="control-item">
+                        <label for="eco-dial" class="control-label">
+                            Routing Aggressiveness
+                            <span id="eco-dial-val" class="text-neon-blue">50%</span>
+                        </label>
+                        <p class="control-desc">0% = Prioritise latency SLA &nbsp;|&nbsp; 100% = Max carbon savings</p>
+                        <input type="range" id="eco-dial" class="cyber-slider" min="0" max="100" value="50">
+                    </div>
+
+                    <div class="control-item toggle-item">
+                        <div class="toggle-text">
+                            <label class="control-label text-neon-yellow">
+                                <i class="fa-solid fa-seedling"></i> Photosynthesis Mode
+                            </label>
+                            <p class="control-desc">Auto-hibernate batch jobs during dirty-grid spikes.</p>
+                        </div>
+                        <label class="switch">
+                            <input type="checkbox" id="photosynthesis-toggle" checked>
+                            <span class="slider-toggle round"></span>
+                        </label>
+                        <div id="hibernate-status" class="status-subtext text-neon-green">▶ SYSTEM NORMAL: All tasks active</div>
+                    </div>
+                </section>
+
+                <!-- PREDICT FORECAST -->
+                <section class="panel cyber-panel time-machine">
+                    <div class="panel-header glowing-border-bottom">
+                        <h3><i class="fa-solid fa-satellite-dish"></i> 24h Energy Forecast</h3>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="forecastChart"></canvas>
+                    </div>
+                </section>
+
+                <!-- DATACENTER TELEMETRY (CPU chart) -->
+                <section class="panel cyber-panel" id="telemetry">
+                    <div class="panel-header glowing-border-bottom">
+                        <h3><i class="fa-solid fa-server"></i> Datacenter CPU Telemetry</h3>
+                        <span class="badge live-badge">LIVE</span>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="cpuChart"></canvas>
+                    </div>
+                </section>
+
+                <!-- REGION CARDS -->
+                <section class="panel cyber-panel row-auto">
+                    <div class="panel-header glowing-border-bottom">
+                        <h3><i class="fa-solid fa-tower-broadcast"></i> Regional Telemetry</h3>
+                    </div>
+                    <div class="region-stats-grid" id="region-stats-grid"></div>
+                </section>
+
+                <!-- FINOPS CHART -->
+                <section class="panel cyber-panel double-span" id="finops">
+                    <div class="panel-header glowing-border-bottom">
+                        <h3><i class="fa-solid fa-chart-line"></i> OpEx vs Carbon Equivalent</h3>
+                    </div>
+                    <div class="chart-container tall-chart">
+                        <canvas id="finopsChart"></canvas>
+                    </div>
+                </section>
+
+            </div><!-- /dashboard-grid -->
+        </main>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
